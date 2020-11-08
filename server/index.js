@@ -15,10 +15,15 @@ app.use(bodyParser.json());
 app.use('/api', (req, res) => {
     axios.get('https://api.meetup.com/React-Medellin/events/261268608/attendance?key=7f1c38117d3f603bd7121a474485e&sign=true')
     .then(response => {
-      return res.status(200).send(response.data);
+      return res.status(200).json(response.data);
     })
     .catch((error) => {
-      return res.status(400).send({status: error})
+      return res
+        .status(error.response.status)
+        .json({
+          statusCode: error.response.status,
+          status: error.response.statusText
+        })
     });
 });
 
